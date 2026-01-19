@@ -1,0 +1,220 @@
+
+{% extends 'admin/layout_admin.html' %}
+{% block content %}
+
+
+
+
+<div class="main-content" id="mainContent">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="d-flex align-items-center logo-bar">
+                    <button class="mobile-menu-btn me-3" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title">SSUET ADMIN</h1>
+                </div>
+                
+
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="user-avatar">{{user.email}}</div>
+                       <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                           <span class="user-icon"><i class="fas fa-user"></i></span> Account
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><h6 class="dropdown-header">User Actions</h6></li>
+                            <!-- <li><a class="dropdown-item" href="#"><i class="fas fa-edit"></i> Edit Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-key"></i> Change Password</a></li> -->
+                            <li><div class="dropdown-divider"></div></li>
+                            <li><a class="dropdown-item text-danger" href="{{url_for('admin__logout')}}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                        </ul>
+                    </div>
+
+                  
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Chat Container -->
+            <div class="chat-container">
+                <!-- Chat Area -->
+            <div class="chat-area" id="chatArea">
+                <!-- Contents Table View -->
+                  {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+
+<div class="product-form-container">
+    <div class="form-header">
+        <h2>Update {{page_title}}</h2>
+        <p>Fill in the details below to update new item</p>
+    </div>
+    
+ <form class="product-form" method="POST" action="{{ url_for('update_content', content_id=content.id) }}" enctype="multipart/form-data">
+        <!-- Title Field -->
+        <div class="form-group">
+            <label for="product-title" class="form-label">Title</label>
+            <input 
+                type="text" 
+                id="product-title" 
+                class="form-control" 
+                placeholder="Enter title" 
+                name="title"
+                value="{{content.title}}"
+                required>
+        </div>
+        
+        <!-- Short Details Field -->
+        <div class="form-group">
+            <label for="short-details" class="form-label">Short Description</label>
+            <textarea 
+                id="short-details" 
+                class="form-control"
+                name="short_description"
+                rows="3" 
+                placeholder="Content description (max 200 characters)" 
+                maxlength="200" 
+                required>{{content.short_description}}</textarea>
+            <div class="char-count">0/200 characters</div>
+        </div>
+        
+        {# <!-- Price Field -->
+        <div class="form-group">
+            <label for="product-price" class="form-label">Price</label>
+            <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input 
+                    type="number" 
+                    id="product-price" 
+                    class="form-control"
+                    name="price" 
+                    placeholder="0.00" 
+                    min="0" 
+                    step="0.01" 
+                    required>
+            </div>
+        </div> #}
+        
+        <!-- Category Dropdown -->
+        {# <div class="form-group">
+            <label for="product-category" class="form-label">Category</label>
+            <select id="product-category" name="category" class="form-select" required>
+                <option value="" disabled selected>Select a category</option>
+                <option value="electronics">Electronics</option>
+                <option value="clothing">Clothing & Apparel</option>
+                <option value="home">Home & Garden</option>
+                <option value="books">Books & Media</option>
+                <option value="sports">Sports & Outdoors</option>
+                <option value="beauty">Beauty & Health</option>
+                <option value="other">Other</option>
+            </select>
+        </div> #}
+        
+        <!-- Description Field with Rich Text Editor -->
+        <div class="form-group">
+            <label for="product-description" class="form-label">Full Description</label>
+            <div id="editor-container" style="height: 250px;">
+                <!-- Quill editor will be inserted here -->
+            </div>
+            <!-- Hidden textarea to store the HTML content for form submission -->
+            <textarea 
+                id="product-description" 
+                name="description"
+                 
+                style="display: none;" 
+                required>{{content.description}}</textarea>
+        </div>
+        <div class="form-group">
+        <label class="form-label">Product Image</label>
+
+        {% if content.image %}
+            <div class="mb-2">
+                <img 
+                    src="{{ url_for('static', filename='uploads/content/' ~ content.image) }}" 
+                    alt="Current Image"
+                    style="max-width: 200px; border: 1px solid #ddd; padding: 5px;">
+            </div>
+        {% endif %}
+
+        <input 
+            type="file" 
+            name="image" 
+            class="form-control" 
+            accept="image/*">
+        
+        <small class="text-muted">
+            Leave empty if you don’t want to change the image
+        </small>
+    </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+    </form>
+</div>
+
+
+            </div>
+        </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    var quill = new Quill('#editor-container', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                [{ 'header': [1, 2, 3, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'indent': '-1'}, { 'indent': '+1' }],
+                ['link', 'image'],
+                ['clean']
+            ]
+        },
+        placeholder: 'Provide detailed product information, features, and specifications...'
+    });
+
+    // 🔹 LOAD EXISTING CONTENT INTO QUILL
+    var existingDescription = document.getElementById('product-description').value;
+    if (existingDescription && existingDescription.trim() !== '') {
+        quill.root.innerHTML = existingDescription;
+    }
+
+    // 🔹 Sync Quill → Textarea on change
+    quill.on('text-change', function () {
+        document.getElementById('product-description').value = quill.root.innerHTML;
+    });
+
+    // 🔹 Form submit validation
+    document.querySelector('.product-form').addEventListener('submit', function (e) {
+        var html = quill.root.innerHTML.trim();
+
+        if (html === '<p><br></p>' || html === '') {
+            e.preventDefault();
+            alert('Please enter a product description.');
+        } else {
+            document.getElementById('product-description').value = html;
+        }
+    });
+
+});
+</script>
+
+
+
+{% endblock %}
+
+
+

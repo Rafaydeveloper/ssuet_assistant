@@ -1,0 +1,71 @@
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="logo-container">
+            <div class="logo"><img src="/static/images/SSUET logo Bot.png" alt=""></div>
+            <span class="app-name">SSUET Assistant</span>
+        </div>
+        <button class="toggle-sidebar" id="toggleSidebar">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+    </div>
+
+
+    <div class="sidebar-nav">
+        <div class="nav-section">
+        <div class="nav-section-header">
+            <h3>Quick Actions</h3>
+            <button class="nav-collapse-btn">
+                <i class="fas fa-chevron-down"></i>
+            </button>
+        </div>
+        <div class="nav-items-container">
+            <a href="{{ url_for('admin') }}" class="nav-item">
+                <div class="nav-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <span>Dashboard</span>
+            </a>
+
+           <a href="{{ url_for('admin_content') }}" class="nav-item">
+                <div class="nav-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <span>Quick Content</span>
+            </a>
+
+           <a href="{{url_for('admins')}}" class="nav-item">
+                <div class="nav-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <span>Admins</span>
+            </a>
+           <a href="{{url_for('chatbot_users')}}" class="nav-item">
+                <div class="nav-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <span>Chatbot Users</span>
+            </a>
+
+            {# <div class="nav-item">
+                <div class="nav-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <span><a href="#">Courses</a></span>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <span><a href="#">Schedule</a></span>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <span><a href="#">Settings</a></span>
+            </div> #}
+        </div>
+    </div>
+        
+    </div>
+</div>

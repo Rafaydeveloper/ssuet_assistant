@@ -1,0 +1,118 @@
+{% extends 'admin/layout_admin.html' %}
+{% block content %}
+
+
+
+
+<div class="main-content" id="mainContent">
+
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="d-flex align-items-center logo-bar">
+                    <button class="mobile-menu-btn me-3" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title">SSUET ADMIN</h1>
+                </div>
+                
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="user-avatar">{{user_info.email}}</div>
+                       <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                           <span class="user-icon"><i class="fas fa-user"></i></span> Account
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><h6 class="dropdown-header">User Actions</h6></li>
+                            <!-- <li><a class="dropdown-item" href="#"><i class="fas fa-edit"></i> Edit Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-key"></i> Change Password</a></li> -->
+                            <li><div class="dropdown-divider"></div></li>
+                            <li><a class="dropdown-item text-danger" href="{{url_for('admin__logout')}}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                        </ul>
+                    </div>
+
+                  
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Chat Container -->
+            <div class="chat-container">
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                            <div style="margin: 20px;" class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                        {% endwith %}
+                <!-- Chat Area -->
+            <div class="chat-area" id="chatArea">
+                        <!-- Stats Section -->
+            <section class="stats-section">
+                <h2 class="stats-title">ChatBot Overview</h2>
+
+               
+                <div class="stats-grid">
+                    <div class="stat-card item-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-value">{{total_admins}}</div>
+                        <div class="stat-label">Total Admins</div>
+                        <!-- <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+245 this month</span>
+                        </div> -->
+                        <div class="stat-view-more">
+                            <a class="nav-arrow" href="{{url_for('admins')}}">View more</a>
+                            <i class="fas fa-chevron-right nav-arrow"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card student-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="stat-value">{{total_content}}</div>
+                        <div class="stat-label">Quick Content</div>
+                        <!-- <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+18 this week</span>
+                        </div> -->
+                        <div class="stat-view-more">
+                            <a class="nav-arrow" href="{{url_for('admin_content')}}">View more</a>
+                            <i class="fas fa-chevron-right nav-arrow"></i>
+                        </div>
+                    </div>
+
+                    <div class="stat-card issue-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-value">{{total_users}}</div>
+                        <div class="stat-label">ChatBot Users</div>
+                        <!-- <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+42 today</span>
+                        </div> -->
+                       <div class="stat-view-more">
+                            <a class="nav-arrow" href="{{url_for('chatbot_users')}}">View more</a>
+                            <i class="fas fa-chevron-right nav-arrow"></i>
+                        </div>
+                    </div>
+                    
+                    
+                    
+                   
+                </div>
+            </section>
+            </div>
+        </div>
+
+
+{% endblock %}
+
+

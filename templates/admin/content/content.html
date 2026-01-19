@@ -1,0 +1,133 @@
+
+{% extends 'admin/layout_admin.html' %}
+{% block content %}
+
+
+
+
+<div class="main-content" id="mainContent">
+            <!-- Top Bar -->
+           
+             <div class="top-bar">
+                <div class="d-flex align-items-center logo-bar">
+                    <button class="mobile-menu-btn me-3" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title">SSUET ADMIN</h1>
+                </div>
+                
+
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="user-avatar">{{user.email}}</div>
+                       <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                           <span class="user-icon"><i class="fas fa-user"></i></span> Account
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><h6 class="dropdown-header">User Actions</h6></li>
+                            <!-- <li><a class="dropdown-item" href="#"><i class="fas fa-edit"></i> Edit Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-key"></i> Change Password</a></li> -->
+                            <li><div class="dropdown-divider"></div></li>
+                            <li><a class="dropdown-item text-danger" href="{{url_for('admin__logout')}}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                        </ul>
+                    </div>
+
+                  
+                    </div>
+                </div>
+            </div>
+            
+           
+                 {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                        <div style="margin: 20px;" class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+           
+
+            <!-- Chat Container -->
+            <div class="chat-container">
+                <!-- Chat Area -->
+            <div class="chat-area" id="chatArea">
+                <!-- Contents Table View -->
+                    
+                <div class="d-flex align-items-center" style="justify-content: space-between;">
+                    <div>
+                    <h2>Contents</h2>
+                 </div>
+                <div>
+                  <a href="{{url_for('add_content')}}" class="btn btn-success" style="float: right;" type="button">
+                            <span class="user-icon"><i class="fas fa-plus"></i></span> Add
+                        </a>
+                </div>
+                 </div>
+                <div class="table-card" id="ItemsTable">
+                      
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Content ID</th>
+                                    <th>Content Name</th>
+                                    <th>Content</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                         
+                            {% for content in contents %}
+                            <tr>
+                                <td>{{ content.id }}</td>
+                                <td>{{ content.title }}</td>
+                                <td>{{ content.short_description }}</td>
+                                <td>
+                                    <img src="/{{ content.image_path }}/{{ content.image }}" width="60">
+                                </td>
+                                <td>
+                                    <div class="action-btns">
+                                        <a class="btn-icon btn-edit" href="{{ url_for('edit_content', content_id=content.id) }}">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a class="btn-icon btn-delete"
+                                        onclick="return confirm('Are you sure?')"
+                                        href="{{ url_for('delete_content', content_id=content.id) }}">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+
+                                
+                               
+                                
+                               
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <!-- <nav class="mt-4">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                    </nav> -->
+                </div>
+            </div>
+        </div>
+
+
+{% endblock %}
+
+

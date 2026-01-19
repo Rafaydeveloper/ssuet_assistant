@@ -1,0 +1,466 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Login</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="{{config.css('style.css')}}">
+
+</head>
+<body>
+ 
+<style>  
+/* ===== LOGIN PAGE ===== */
+/* ===== GOOGLE FONTS ===== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+
+
+:root {
+    --primary: #662D91;
+    --primary-light: #8a56b5;
+    --primary-dark: #4c1f6d;
+    --secondary: #34B04A;
+    --secondary-light: #5bc76c;
+    --light-bg: #EBE6F0;
+    --light-bg-2: #f5f2f8;
+    --accent: #F0CE29;
+    --text: #1D1D1D;
+    --text-light: #6c757d;
+    --sidebar-width: 320px;
+    --sidebar-collapsed: 80px;
+    --header-height: 70px;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.12);
+    --transition: all 0.3s ease;
+    --radius: 12px;
+    --radius-sm: 8px;
+}
+
+
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--light-bg) 0%, #f9f9fb 100%);
+    padding: 20px;
+    font-family: 'Poppins', sans-serif;
+    flex-direction: column;
+}
+
+
+.login-container {
+    width: 100%;
+    max-width: 1100px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    background: white;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+.login-illustration {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+}
+
+.illustration-icon {
+    font-size: 120px;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.illustration-title {
+    font-size: 32px;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.illustration-text {
+    font-size: 16px;
+    opacity: 0.9;
+    max-width: 350px;
+    line-height: 1.6;
+}
+
+.login-form-container {
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.login-title {
+    font-size: 32px;
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.login-subtitle {
+    color: var(--text-light);
+    font-size: 16px;
+}
+
+.login-tabs {
+    display: flex;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #eee;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 15px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+}
+
+.tab-btn.active {
+    color: var(--primary);
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--primary);
+    border-radius: 3px 3px 0 0;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.forgot-link {
+    text-align: right;
+    margin-top: 10px;
+}
+
+.forgot-link a {
+    color: var(--primary);
+    font-size: 14px;
+    transition: var(--transition);
+}
+
+.forgot-link a:hover {
+    color: var(--primary-dark);
+}
+
+.divider {
+    text-align: center;
+    margin: 25px 0;
+    position: relative;
+    color: var(--text-light);
+    font-size: 14px;
+}
+
+.divider::before, .divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 45%;
+    height: 1px;
+    background: #eee;
+}
+
+.divider::before {
+    left: 0;
+}
+
+.divider::after {
+    right: 0;
+}
+
+
+/* ===== FORMS ===== */
+.form-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 30px;
+    box-shadow: var(--shadow);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.form-title {
+    font-size: 24px;
+    margin-bottom: 25px;
+    color: var(--primary);
+    text-align: center;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text);
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+    transition: var(--transition);
+    background: white;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(102, 45, 145, 0.1);
+}
+
+textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+}
+
+
+/* ===== BUTTONS ===== */
+.btn {
+    padding: 12px 24px;
+    border-radius: var(--radius-sm);
+    border: none;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: var(--secondary);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: var(--secondary-light);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-accent {
+    background: var(--accent);
+    color: var(--text);
+}
+
+.btn-accent:hover {
+    background: #e0b824;
+    color: var(--text);
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+}
+
+.btn-outline:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-sm {
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+.btn-lg {
+    padding: 15px 30px;
+    font-size: 16px;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+
+</style>
+<div class="login-page">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <ul class="flashes">
+            {% for category, message in messages %}
+              <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+
+        <div class="login-container">
+            <!-- Left Side - Illustration -->
+            <div class="login-illustration">
+                <img width="150" src="/static/images/SSUET-trasnparent.png" alt="">
+                <h1 class="illustration-title">SSUET Assistance</h1>
+               <p class="illustration-text">
+                  Welcome to the Sir Syed University Assistant! Explore your university and stay updated with the world around you.
+              </p>
+
+            </div>
+            
+            <!-- Right Side - Login Form -->
+            <div class="login-form-container">
+                <div class="login-header">
+                    <h1 class="login-title">Welcome!</h1>
+                    <p class="login-subtitle">Sign in to access your Account</p>
+                </div>
+                
+                <!-- Login Tabs -->
+                <div class="login-tabs">
+                    <button class="tab-btn active" data-tab="UserLogin">Login</button>
+                    <button class="tab-btn" data-tab="UserRegister">Register</button>
+                </div>
+                
+                <!-- Login Form -->
+                <div class="tab-content active" id="UserLogin">
+                    <form class="login-form"  method="POST" action="{{ url_for('do_login') }}">
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email"  name="email" class="form-control" placeholder="admin@library.com" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" name="password" placeholder="Enter your password" required>
+                        </div>
+                        
+                        <div class="forgot-link">
+                            <a href="#" data-modal="forgotPasswordModal">Forgot Password?</a>
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-primary btn-block btn-lg mt-4">
+                            <i class="fas fa-sign-in-alt me-2"></i>
+                            Login In
+                        </button>
+                    </form>
+                    
+                   
+                    
+                    
+                </div>
+                
+                <!-- Register Form -->
+                <div class="tab-content" id="UserRegister">
+                    <form class="login-form" method="POST" action="{{ url_for('register') }}">
+                        <div class="form-group">
+                            <label class="form-label" >Email</label>
+                            <input type="text" class="form-control" name="email" placeholder="Enter your Email ID" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" name="password" placeholder="Enter your password" required>
+                        </div>
+                        
+                        <div class="forgot-link">
+                            <a href="#" data-modal="forgotPasswordModal">Forgot Password?</a>
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-secondary btn-block btn-lg mt-4">
+                            <i class="fas fa-user-graduate me-2"></i>
+                            Register Student
+                        </button>
+                    </form>
+                    <br>
+                    <div class="text-center mt-4">
+                        <p>Don't have an account? <a href="#" class="text-primary">Contact Library Admin</a></p>
+                    </div>
+                </div>
+
+
+                
+            </div>
+        </div>
+    </div>
+    
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+       // Login Tabs Functionality
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const tabId = this.getAttribute('data-tab');
+            
+            // Update active tab button
+            tabBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Show corresponding tab content
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+                if (content.id === tabId) {
+                    content.classList.add('active');
+                }
+            });
+        });
+    });
+
+    
+    </script>
+</body>
+</html>
+

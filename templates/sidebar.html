@@ -1,0 +1,203 @@
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="logo-container">
+            <div class="logo"><a href="{{url_for('home')}}"><img src="/static/images/SSUET logo Bot.png" alt=""></a></div>
+            <a href="{{url_for('home')}}" style="text-decoration: none; color: white"><span class="app-name">SSUET Assistant</span></a>
+        </div>
+        <button class="toggle-sidebar" id="toggleSidebar">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+    </div>
+    
+        <form action="{{ url_for('new_chat') }}" method="POST">
+            <button type="submit" class="new-chat-btn">
+                <i class="fas fa-plus"></i> New Chat
+            </button>
+        </form>
+
+
+    <div class="sidebar-nav">
+        <div class="nav-section">
+        <div class="nav-section-header">
+            <h3>Quick Actions</h3>
+            <button class="nav-collapse-btn">
+                <i class="fas fa-chevron-down"></i>
+            </button>
+        </div>
+        <div class="nav-items-container">
+
+
+            {% for content in global_contents %}
+                <a href="{{ url_for('view_content', content_id=content.id) }}" class="nav-item">
+                    <div class="nav-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <span>{{content.title}}</span>
+                </a>
+            {% endfor %}
+            
+        </div>
+    </div>
+        
+        <div class="nav-section">
+            <h3>Recent Chats</h3>
+            {# <div class="chat-history">
+                <div class="chat-item active">
+                    <div class="chat-icon">
+                        <i class="fas fa-message"></i>
+                    </div>
+                    <div class="chat-info">
+                        <div class="chat-title">Course Inquiry</div>
+                        <div class="chat-preview">Can you show me the CS courses?</div>
+                    </div>
+                </div>
+                <div class="chat-item">
+                    <div class="chat-icon">
+                        <i class="fas fa-message"></i>
+                    </div>
+                    <div class="chat-info">
+                        <div class="chat-title">Exam Schedule</div>
+                        <div class="chat-preview">When are the final exams?</div>
+                    </div>
+                </div>
+                <div class="chat-item">
+                    <div class="chat-icon">
+                        <i class="fas fa-message"></i>
+                    </div>
+                    <div class="chat-info">
+                        <div class="chat-title">Faculty Contact</div>
+                        <div class="chat-preview">How to contact CS department?</div>
+                    </div>
+                </div>
+                <div class="chat-item">
+                    <div class="chat-icon">
+                        <i class="fas fa-message"></i>
+                    </div>
+                    <div class="chat-info">
+                        <div class="chat-title">Campus Map</div>
+                        <div class="chat-preview">Where is the library located?</div>
+                    </div>
+                </div>
+            </div> #}
+
+
+          <div class="chat-history" id="chatHistory">
+                {% for chat in chats or user_chats %}
+                <div class="chat-item" data-chat-id="{{ chat.id }}">
+                    <a href="/chat/{{ chat.id }}" class="chat-link">
+                        <div class="chat-icon"><i class="fas fa-message"></i></div>
+                        <div class="chat-info">
+                            <div class="chat-title">
+                                {% set words = chat.title.split() %}
+                                {{ words[:3]|join(' ') }}{% if words|length > 3 %}...{% endif %}
+                            </div>
+                        </div>
+                    </a>
+                    <!-- Delete Button -->
+                    <button class="delete-chat-btn" data-chat-id="{{ chat.id }}">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+
+            <style>
+                .chat-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.chat-link {
+    display: flex;
+    align-items: center;
+    flex: 1;                  /* Takes full width except delete button */
+    text-decoration: none;    
+    color: white;
+}
+
+.chat-icon {
+    margin-right: 10px;
+}
+
+.delete-chat-btn {
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+}
+
+            </style>
+
+
+
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const deleteButtons = document.querySelectorAll('.delete-chat-btn');
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const chatId = button.getAttribute('data-chat-id');
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#662D91',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    fetch('/delete_chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ chat_id: chatId })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+
+                            Swal.fire({
+                                title: 'Deleted!',
+                                text: 'Your chat has been deleted.',
+                                icon: 'success',
+                                timer: 1200,
+                                showConfirmButton: false
+                            }).then(() => {
+                                // ✅ REDIRECT AFTER DELETE
+                                window.location.href = "/chat";
+                            });
+
+                        } else {
+                            Swal.fire(
+                                'Error!',
+                                data.error || 'An error occurred.',
+                                'error'
+                            );
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire(
+                            'Error!',
+                            'An error occurred while deleting the chat.',
+                            'error'
+                        );
+                    });
+                }
+            });
+        });
+    });
+});
+</script>

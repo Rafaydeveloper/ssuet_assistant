@@ -1,0 +1,184 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+
+
+
+<div class="main-content" id="mainContent">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="d-flex align-items-center logo-bar">
+                    <div>
+                    <button class="mobile-menu-btn me-3" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    </div>
+                    <div>
+                        <h1 class="page-title">SSUET Assistant</h1>
+                    </div>
+                </div>
+                
+                
+
+                <div class="user-menu">
+                    <div class="user-info">
+                       <div class="status-indicator">
+                        <div class="status-dot"></div>
+                            <span>rafaymalik2298@gmail.com</span>
+                        </div>
+                       <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                           <span class="user-icon"><i class="fas fa-user"></i></span> Account
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><h6 class="dropdown-header">User Actions</h6></li>
+                            <!-- <li><a class="dropdown-item" href="#"><i class="fas fa-edit"></i> Edit Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-key"></i> Change Password</a></li> -->
+                            <li><div class="dropdown-divider"></div></li>
+                            <li><a class="dropdown-item" href="javascript:void(0)"><i class="fas fa-user"></i> {{user.email}}</a></li>
+                            <li><a class="dropdown-item text-danger" href="{{url_for('logout')}}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                        </ul>
+                    </div>
+
+                  
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Chat Container -->
+            <div class="chat-container">
+                <!-- Chat Header -->
+              
+              
+                <!-- Chat Area -->
+                <div class="chat-area" id="chatArea">
+                    <!-- Welcome Message -->
+                   
+                    
+                    <!-- Quick Actions -->
+                    <div class="quick-actions">
+                        <div class="action-card" data-action="courses">
+                            <div class="action-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <span>Course Outline</span>
+                        </div>
+                        <div class="action-card" data-action="exams">
+                            <div class="action-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <span>Exam Schedule</span>
+                        </div>
+                        <div class="action-card" data-action="contact">
+                            <div class="action-icon">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <span>Contact Department</span>
+                        </div>
+                        <div class="action-card" data-action="map">
+                            <div class="action-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <span>Campus Map</span>
+                        </div>
+                    </div>
+
+                  
+                    {# {{chats_messages}} #}
+
+
+
+                    <!-- Chat History -->
+                    {% if chats or chats_messages %}
+                        {% for chat in chats_messages %}
+                            
+                            <!-- User Message -->
+                            <div class="message user-message">
+                                <p>{{ chat.user_message }}</p>
+                            </div>
+
+                            <!-- Bot Reply -->
+                            <div class="message bot-message">
+                                {{ chat.bot_reply | safe }}
+                                 <small style="color: #652C90;" class="time">{{ chat.created_on.strftime('%d %b %Y %H:%M') }}</small>
+
+                            </div>
+
+                        {% endfor %}
+                    {% else %}
+                        <div class="message bot-message">
+                            <p>Hello! I'm your SSUET Assistant. How can I help you today?</p>
+                        </div>
+                    {% endif %}
+
+                </div>
+                
+              <!-- Input Area -->
+                <!-- <div class="input-area">
+                    <input type="text" class="message-input" id="messageInput" placeholder="Ask me about SSUET...">
+                    <button class="send-button" id="sendButton">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div> -->
+
+                    {# {{chat_id}} #}
+                  <div class="input-area">
+                    <input type="hidden" value="{{chat_id}}" name="chat_id">
+                    <input type="text" id="messageInput" class="message-input" placeholder="Ask me about SSUET...">
+                    <button onclick="sendMessage()" class="send-button">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                
+                <div class="chat-footer">
+                    <span>Developed by Abdul Rafay (GL) | Mohsin | Syed Taha| BS(SE) | 2025F-BSE-241 (GL) | 2025F-BSE-226 | 2025F-BSE-330</span>
+                </div>
+            </div>
+        </div>
+
+<script>
+    const CURRENT_CHAT_ID = {{chat_id}}
+</script>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Map each action to the text you want to insert
+    const actionTexts = {
+        courses: "Show me the course outline of Sir Syed University of Engineering and Technology (Karachi).",
+        exams: "Show me the exam schedule of Sir Syed University of Engineering and Technology (Karachi).",
+        contact: "I want to contact the department of of Sir Syed University of Engineering and Technology (Karachi)",
+        map: "Give me the detail of campus map of Sir Syed University of Engineering and Technology (Karachi)."
+    };
+
+    // Select all action cards
+    const actionCards = document.querySelectorAll('.quick-actions .action-card');
+    const messageInput = document.getElementById('messageInput');
+
+    // Check if input exists
+    if (!messageInput) {
+        console.error("Message input field not found!");
+        return;
+    }
+
+    actionCards.forEach(card => {
+        card.addEventListener('click', function() {
+            const action = card.getAttribute('data-action');
+            const text = actionTexts[action] || "";
+
+            // Insert text into input
+            messageInput.value = text;
+
+            // Focus the input so user sees cursor
+            messageInput.focus();
+            sendMessage(); // call your existing function
+        });
+    });
+});
+
+</script>
+
+{% endblock %}
+
+

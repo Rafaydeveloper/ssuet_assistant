@@ -1,0 +1,112 @@
+
+{% extends 'admin/layout_admin.html' %}
+{% block content %}
+
+
+
+
+<div class="main-content" id="mainContent">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="d-flex align-items-center logo-bar">
+                    <button class="mobile-menu-btn me-3" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title">SSUET ADMIN</h1>
+                </div>
+                
+
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="user-avatar">{{user.email}}</div>
+                       <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                           <span class="user-icon"><i class="fas fa-user"></i></span> Account
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><h6 class="dropdown-header">User Actions</h6></li>
+                            <!-- <li><a class="dropdown-item" href="#"><i class="fas fa-edit"></i> Edit Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-key"></i> Change Password</a></li> -->
+                            <li><div class="dropdown-divider"></div></li>
+                            <li><a class="dropdown-item text-danger" href="{{url_for('admin__logout')}}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                        </ul>
+                    </div>
+
+                  
+                    </div>
+                </div>
+            </div>
+            
+                 {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                        <div style="margin: 20px;" class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+
+            <!-- Chat Container -->
+            <div class="chat-container">
+                <!-- Chat Area -->
+            <div class="chat-area" id="chatArea">
+                <!-- Contents Table View -->
+               
+                <div class="d-flex align-items-center" style="justify-content: space-between;">
+                    <div>
+                    <h2>Admins</h2>
+                 </div>
+                <div>
+                  <a href="{{url_for('add_admin')}}" class="btn btn-success" style="float: right;" type="button">
+                            <span class="user-icon"><i class="fas fa-plus"></i></span> Add
+                        </a>
+                </div>
+                 </div>
+
+              <div class="table-card" id="ItemsTable">
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Admin ID</th>
+                    <th>Admin Email</th>
+                    <th>Created On</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for admin_info in admin_users %}
+                <tr>
+                    <td>{{ admin_info.id }}</td>
+                    <td>{{ admin_info.email }}</td>
+                    <td>{{ admin_info.created_on }}</td>
+                    <td>
+                        <div class="action-btns">
+                            <a class="btn-icon btn-edit" href="{{ url_for('edit_admin', admin_id=admin_info.id) }}">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a class="btn-icon btn-delete"
+                               onclick="return confirm('Are you sure?')"
+                               href="{{ url_for('delete_admin', admin_id=admin_info.id) }}">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+   
+</div>
+
+            </div>
+        </div>
+
+
+{% endblock %}
+
+
